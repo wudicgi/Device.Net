@@ -54,5 +54,29 @@ namespace Device.Net.Windows
         #endregion
 
         #endregion
+
+        #region Extended
+
+        // Reference: https://github.com/jorticus/zeitgeber-tools/blob/527b8b8b5afdeacba8d8adfe7fe0c437c8dc0b3a/Zeitlib/WinAPI/SetupAPI.cs
+
+        public const int SPDRP_DEVICEDESC = 0x00000000;
+        public const int SPDRP_HARDWAREID = 0x00000001;
+        public const int SPDRP_FRIENDLYNAME = 0x0000000C;
+        public const int SPDRP_LOCATION_INFORMATION = 0x0000000D;
+
+        //SetupDiGetDeviceRegistryProperty() gives us the hardware ID, which we use to check to see if it has matching VID/PID
+        //http://www.pinvoke.net/default.aspx/setupapi/SetupDiGetDeviceRegistryProperty.html
+        [DllImport(@"setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern bool SetupDiGetDeviceRegistryProperty(
+            IntPtr deviceInfoSet,
+            ref SpDeviceInfoData deviceInfoData,
+            uint property,
+            out uint propertyRegDataType,
+            byte[] propertyBuffer,
+            uint propertyBufferSize,
+            out uint requiredSize
+        );
+
+        #endregion
     }
 }

@@ -31,5 +31,18 @@
         /// Used to further filter down device definitions on some platforms
         /// </summary>
         public ushort? UsagePage { get; set; }
+
+        #region Extended
+
+        /// <summary>
+        /// USB device display name used to filter
+        /// </summary>
+        /// <remarks>
+        /// Only compare the beginning part (partial match).
+        /// Set to null to skip this check.
+        /// </remarks>
+        public string DisplayName { get; set; }
+
+        #endregion
     }
 }

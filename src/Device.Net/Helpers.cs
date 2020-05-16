@@ -12,6 +12,11 @@ namespace Device.Net
             return ParsingCulture.CompareInfo.IndexOf(paragraph, word, CompareOptions.IgnoreCase) >= 0;
         }
 
+        public static bool StartsWithIgnoreCase(this string paragraph, string word)
+        {
+            return ParsingCulture.CompareInfo.IndexOf(paragraph, word, CompareOptions.IgnoreCase) == 0;
+        }
+
         public static string GetHex(uint? id)
         {
             //TODO: Fix code rules here
