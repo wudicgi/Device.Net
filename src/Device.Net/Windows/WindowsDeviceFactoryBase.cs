@@ -49,6 +49,7 @@ namespace Device.Net.Windows
                 spDeviceInfoData.CbSize = (uint)Marshal.SizeOf(spDeviceInfoData);
                 string productIdHex = null;
                 string vendorHex = null;
+                string displayName = null;
 
                 var guidString = GetClassGuid().ToString();
                 var copyOfClassGuid = new Guid(guidString);
@@ -116,42 +117,41 @@ namespace Device.Net.Windows
                             if (filterDeviceDefinition.ProductId.HasValue && !spDeviceInterfaceDetailData.DevicePath.ContainsIgnoreCase(productIdHex)) continue;
                         }
 
-                        if ((filterDeviceDefinition != null) && (filterDeviceDefinition.DisplayName != null))
+                        uint[] tryPropertyList = new uint[] { APICalls.SPDRP_FRIENDLYNAME, APICalls.SPDRP_DEVICEDESC };
+                        foreach (uint tryProperty in tryPropertyList)
                         {
-                            string deviceDisplayName = null;
+                            byte[] propertyValueBuffer = new byte[256];
+                            isSuccess = APICalls.SetupDiGetDeviceRegistryProperty(devicesHandle, ref spDeviceInfoData, tryProperty, out uint dwRegType, propertyValueBuffer, (uint)propertyValueBuffer.Length, out uint dwRegSize);
+                            if (!isSuccess)
+                            {
+                                var errorCode = Marshal.GetLastWin32Error();
 
-                            uint[] tryPropertyList = new uint[] { APICalls.SPDRP_FRIENDLYNAME, APICalls.SPDRP_DEVICEDESC };
-                            foreach (uint tryProperty in tryPropertyList) {
-                                byte[] propertyValueBuffer = new byte[256];
-                                isSuccess = APICalls.SetupDiGetDeviceRegistryProperty(devicesHandle, ref spDeviceInfoData, tryProperty, out uint dwRegType, propertyValueBuffer, (uint)propertyValueBuffer.Length, out uint dwRegSize);
-                                if (!isSuccess)
+                                if (errorCode == APICalls.ERROR_NO_MORE_ITEMS)
                                 {
-                                    var errorCode = Marshal.GetLastWin32Error();
-
-                                    if (errorCode == APICalls.ERROR_NO_MORE_ITEMS)
-                                    {
-                                        Log($"The call to {nameof(APICalls.SetupDiGetDeviceRegistryProperty)} returned ERROR_NO_MORE_ITEMS", null, LogLevel.Information);
-                                        break;
-                                    }
-
-                                    if (errorCode > 0)
-                                    {
-                                        Log($"{nameof(APICalls.SetupDiGetDeviceRegistryProperty)} called successfully but a device was skipped while enumerating because something went wrong. The device was at index {i}. The error code was {errorCode}.", null, LogLevel.Warning);
-                                    }
-                                }
-                                else
-                                {
-                                    deviceDisplayName = System.Text.Encoding.Unicode.GetString(propertyValueBuffer).TrimEnd('\0');
+                                    Log($"The call to {nameof(APICalls.SetupDiGetDeviceRegistryProperty)} returned ERROR_NO_MORE_ITEMS", null, LogLevel.Information);
                                     break;
                                 }
-                            }
 
-                            if (deviceDisplayName == null)
+                                if (errorCode > 0)
+                                {
+                                    Log($"{nameof(APICalls.SetupDiGetDeviceRegistryProperty)} called successfully but a device was skipped while enumerating because something went wrong. The device was at index {i}. The error code was {errorCode}.", null, LogLevel.Warning);
+                                }
+                            }
+                            else
+                            {
+                                displayName = System.Text.Encoding.Unicode.GetString(propertyValueBuffer).TrimEnd('\0');
+                                break;
+                            }
+                        }
+
+                        if ((filterDeviceDefinition != null) && (filterDeviceDefinition.DisplayName != null))
+                        {
+                            if (displayName == null)
                             {
                                 continue;
                             }
 
-                            if (!deviceDisplayName.StartsWithIgnoreCase(filterDeviceDefinition.DisplayName))
+                            if (!displayName.StartsWithIgnoreCase(filterDeviceDefinition.DisplayName))
                             {
                                 continue;
                             }
