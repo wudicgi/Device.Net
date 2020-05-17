@@ -13,7 +13,7 @@ namespace Device.Net
         #endregion
 
         #region Constructor
-        public ConnectedDeviceDefinition(string deviceId)
+        public ConnectedDeviceDefinition(string deviceId, string displayName = null)
         {
             if(string.IsNullOrEmpty(deviceId))
             {
@@ -21,6 +21,8 @@ namespace Device.Net
             }
 
             DeviceId = deviceId;
+
+            DisplayName = displayName;
         }
         #endregion
     }

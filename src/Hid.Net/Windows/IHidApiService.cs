@@ -11,7 +11,7 @@ namespace Hid.Net.Windows
     /// </summary>
     public interface IHidApiService : IApiService
     {
-        ConnectedDeviceDefinition GetDeviceDefinition(string deviceId, SafeFileHandle safeFileHandle);
+        ConnectedDeviceDefinition GetDeviceDefinition(string deviceId, SafeFileHandle safeFileHandle, string displayName = null);
         HidAttributes GetHidAttributes(SafeFileHandle safeFileHandle);
         HidCollectionCapabilities GetHidCapabilities(SafeFileHandle readSafeFileHandle);
         Guid GetHidGuid();

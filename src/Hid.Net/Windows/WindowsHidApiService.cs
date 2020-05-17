@@ -56,7 +56,7 @@ namespace Hid.Net.Windows
         #endregion
 
         #region Implementation
-        public ConnectedDeviceDefinition GetDeviceDefinition(string deviceId, SafeFileHandle safeFileHandle)
+        public ConnectedDeviceDefinition GetDeviceDefinition(string deviceId, SafeFileHandle safeFileHandle, string displayName = null)
         {
             var hidAttributes = GetHidAttributes(safeFileHandle);
             var hidCollectionCapabilities = GetHidCapabilities(safeFileHandle);
@@ -77,7 +77,9 @@ namespace Hid.Net.Windows
                 UsagePage = hidCollectionCapabilities.UsagePage,
                 VendorId = (ushort)hidAttributes.VendorId,
                 VersionNumber = (ushort)hidAttributes.VersionNumber,
-                DeviceType = DeviceType.Hid
+                DeviceType = DeviceType.Hid,
+
+                DisplayName = displayName
             };
         }
 

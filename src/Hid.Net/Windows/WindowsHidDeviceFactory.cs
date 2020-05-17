@@ -12,7 +12,7 @@ namespace Hid.Net.Windows
         #endregion
 
         #region Protected Override Methods
-        protected override ConnectedDeviceDefinition GetDeviceDefinition(string deviceId)
+        protected override ConnectedDeviceDefinition GetDeviceDefinition(string deviceId, string displayName = null)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace Hid.Net.Windows
 
                     Logger?.Log($"Found device {deviceId}", nameof(WindowsHidDeviceFactory), null, LogLevel.Information);
 
-                    return HidService.GetDeviceDefinition(deviceId, safeFileHandle);
+                    return HidService.GetDeviceDefinition(deviceId, safeFileHandle, displayName);
                 }
             }
             catch (Exception ex)

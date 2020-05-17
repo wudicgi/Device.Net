@@ -23,7 +23,7 @@ namespace Device.Net.Windows
         #endregion
 
         #region Protected Abstract Methods
-        protected abstract ConnectedDeviceDefinition GetDeviceDefinition(string deviceId);
+        protected abstract ConnectedDeviceDefinition GetDeviceDefinition(string deviceId, string displayName = null);
         protected abstract Guid GetClassGuid();
         #endregion
 
@@ -139,7 +139,14 @@ namespace Device.Net.Windows
                             }
                             else
                             {
-                                displayName = System.Text.Encoding.Unicode.GetString(propertyValueBuffer).TrimEnd('\0');
+                                displayName = System.Text.Encoding.Unicode.GetString(propertyValueBuffer);
+
+                                int nullCharIndex = displayName.IndexOf('\0');
+                                if (nullCharIndex != -1)
+                                {
+                                    displayName = displayName.Substring(0, nullCharIndex);
+                                }
+
                                 break;
                             }
                         }
@@ -157,7 +164,7 @@ namespace Device.Net.Windows
                             }
                         }
 
-                        var connectedDeviceDefinition = GetDeviceDefinition(spDeviceInterfaceDetailData.DevicePath);
+                        var connectedDeviceDefinition = GetDeviceDefinition(spDeviceInterfaceDetailData.DevicePath, displayName);
 
                         if (connectedDeviceDefinition == null)
                         {
@@ -216,7 +223,8 @@ namespace Device.Net.Windows
         #endregion
 
         #region Public Static Methods
-        public static ConnectedDeviceDefinition GetDeviceDefinitionFromWindowsDeviceId(string deviceId, DeviceType deviceType, ILogger logger)
+        public static ConnectedDeviceDefinition GetDeviceDefinitionFromWindowsDeviceId(string deviceId, DeviceType deviceType, ILogger logger,
+                string displayName = null)
         {
             uint? vid = null;
             uint? pid = null;
@@ -230,7 +238,7 @@ namespace Device.Net.Windows
                 logger?.Log($"Error {ex.Message}", nameof(GetDeviceDefinitionFromWindowsDeviceId), ex, LogLevel.Error);
             }
 
-            return new ConnectedDeviceDefinition(deviceId) { DeviceType = deviceType, VendorId = vid, ProductId = pid };
+            return new ConnectedDeviceDefinition(deviceId) { DeviceType = deviceType, VendorId = vid, ProductId = pid, DisplayName = displayName };
         }
         #endregion
     }

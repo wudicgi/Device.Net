@@ -112,7 +112,7 @@ namespace Usb.Net.WindowsSample
                 Console.WriteLine("Currently connected devices: ");
                 foreach (var device in devices)
                 {
-                    Console.WriteLine(device.DeviceId);
+                    Console.WriteLine($"{device.DeviceId} => {device.DisplayName}");
                 }
                 Console.WriteLine();
 
