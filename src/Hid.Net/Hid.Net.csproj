@@ -33,7 +33,7 @@ Supports .NET, Android, and UWP out of the box. Other platforms can be added</De
     </When>
     <When Condition=" '$(Configuration)'=='Release' ">
       <PropertyGroup>
-        <SignAssembly>true</SignAssembly>
+        <SignAssembly>false</SignAssembly>
         <DelaySign>false</DelaySign>
         <AssemblyOriginatorKeyFile>../Device.Net/Device.Net.pfx</AssemblyOriginatorKeyFile>
       </PropertyGroup>
