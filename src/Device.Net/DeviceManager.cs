@@ -95,11 +95,14 @@ namespace Device.Net
             var deviceTypePasses = !filterDevice.DeviceType.HasValue || filterDevice.DeviceType == actualDevice.DeviceType;
             var usagePagePasses = !filterDevice.UsagePage.HasValue || filterDevice.UsagePage == actualDevice.UsagePage;
 
+            var displayNamePasses = (filterDevice.DisplayName == null) || actualDevice.DisplayName.StartsWithIgnoreCase(filterDevice.DisplayName);
+
             var returnValue = 
                 vendorIdPasses &&
                 productIdPasses &&
                 deviceTypePasses &&
-                usagePagePasses;
+                usagePagePasses &&
+                displayNamePasses;
 
             return returnValue;
         }
