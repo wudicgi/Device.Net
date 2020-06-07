@@ -23,7 +23,8 @@ namespace Usb.Net.Sample
             new FilterDeviceDefinition{ DeviceType= DeviceType.Usb, VendorId= 0x1209, ProductId=0x53C1, Label="Trezor One Firmware 1.7.x" },
             new FilterDeviceDefinition{ DeviceType= DeviceType.Usb, VendorId= 0x1209, ProductId=0x53C0, Label="Model T" }
             */
-            new FilterDeviceDefinition{ DeviceType= DeviceType.Usb, VendorId= 0x0483, ProductId=0x0001, DisplayName="BeatShow" }
+            new FilterDeviceDefinition{ DeviceType= DeviceType.Usb, VendorId= 0x0483, ProductId=0x0001, DisplayName="BeatShow Box BX-31 (E_B001ED)" },
+            new FilterDeviceDefinition{ DeviceType= DeviceType.Usb, VendorId= 0x0483, ProductId=0x0001, DisplayName="BeatShow Box BX-31 (E_E001F1)" }
         };
         #endregion
 

@@ -63,7 +63,7 @@ namespace Device.Net.LibUsb
             GC.SuppressFinalize(this);
         }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(ConnectedDeviceDefinition connectedDeviceDefinition = null)
         {
             if (disposed) throw new ValidationException(Messages.DeviceDisposedErrorMessage);
 

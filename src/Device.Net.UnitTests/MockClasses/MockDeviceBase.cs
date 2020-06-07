@@ -20,7 +20,7 @@ namespace Device.Net.UnitTests
         {
         }
 
-        public Task InitializeAsync()
+        public Task InitializeAsync(ConnectedDeviceDefinition connectedDeviceDefinition = null)
         {
             _IsInitialized = true;
             return Task.FromResult(true);

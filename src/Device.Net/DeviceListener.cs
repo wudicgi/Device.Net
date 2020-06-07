@@ -119,7 +119,7 @@ namespace Device.Net
                     Log($"Attempting to initialize with DeviceId of {device.DeviceId}", null);
 
                     //The device is not initialized so initialize it
-                    await device.InitializeAsync();
+                    await device.InitializeAsync(connectedDeviceDefinition);
 
                     //Let listeners know a registered device was initialized
                     DeviceInitialized?.Invoke(this, new DeviceEventArgs(device));

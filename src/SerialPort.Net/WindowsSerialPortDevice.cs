@@ -61,7 +61,7 @@ namespace SerialPort.Net.Windows
         #endregion
 
         #region Public Methods
-        public Task InitializeAsync()
+        public Task InitializeAsync(ConnectedDeviceDefinition connectedDeviceDefinition = null)
         {
             return Task.Run(() => { Initialize(); });
         }

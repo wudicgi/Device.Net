@@ -20,7 +20,7 @@ namespace Device.Net.Windows
         #endregion
 
         #region Public Methods
-        public abstract Task InitializeAsync();
+        public abstract Task InitializeAsync(ConnectedDeviceDefinition connectedDeviceDefinition = null);
         #endregion
 
         #region Public Static Methods
